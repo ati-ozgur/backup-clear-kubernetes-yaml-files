@@ -46,6 +46,19 @@ function get_namespaces
 
 }
 
+function confirm_folder
+{
+	param (
+		[string]$foldername
+		)
+	$exists = Test-Path -Path $foldername
+	if ( $exists -eq $false) {
+	   Write-Host "$foldername doesn't exist, creating"
+	   New-Item -Path $foldername -ItemType directory
+	}
+}
+
+
 function save_yaml
 {
 	param (
@@ -53,7 +66,9 @@ function save_yaml
 		[string]$name,
 		[string]$namespace = ""
 		)
+	confirm_folder "backup/$namespace"
 	$scriptblock = {kubectl get $type_name $name  -n $namespace -o=json | jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.selfLink,.metadata.creationTimestamp,.metadata.annotations,.metadata.generation,.metadata.ownerReferences,.status)' | yq eval . --prettyPrint	}
 	Invoke-Command -scriptblock $scriptblock | Out-File "$namespace\pod_$name.yml"
 	
 }
+
