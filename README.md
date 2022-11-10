@@ -74,7 +74,10 @@ Below is an output directory structure of an example run
 
 ### current resources saved
 
-current script saves below resources
+current script saves below resources.
+It should be easy to add more resources to this list provided resource is supported by kubectl get command.
+
+
 
 - workloads
 	- "pods"
