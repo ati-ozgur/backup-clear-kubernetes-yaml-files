@@ -45,13 +45,14 @@ I am using scoop
 
 4. run following commands in powershell
 
+a. save everything in all namespaces
 
 	.  .\backup_clear_kubernetes_yaml_files.ps1 
-	# save everything in all namespace
 	save_all
 
+b. save everything in given namespace below development
+
 	.  .\backup_clear_kubernetes_yaml_files.ps1 
-	# save everything in given namespace below development
 	save_all_in_namespace development
 
 
