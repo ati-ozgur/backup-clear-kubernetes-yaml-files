@@ -103,10 +103,30 @@ function save_all_in_namespace
 	param (
 		[string]$namespace = "development"
 		)
-		save_type "pod" $namespace
-		#save_type "deployment" $namespace
-		#save_type "daemonset" $namespace
-		#save_type "service" $namespace
+		# workloads
+		save_type "pods" $namespace
+		save_type "deployments" $namespace
+		save_type "daemonsets" $namespace
+		save_type "statefulsets" $namespace
+		save_type "replicasets" $namespace
+		save_type "jobs" $namespace
+		save_type "cronjobs" $namespace
+
+		# config
+		save_type "configmaps" $namespace
+		save_type "secrets" $namespace
+
+		# network
+		save_type "services" $namespace
+		save_type "endpoints" $namespace
+		save_type "ingress" $namespace
+		save_type "networkpolicy" $namespace
+
+		# storage
+		save_type "persistentvolumeclaims" $namespace
+		save_type "persistentvolume" $namespace
+
+		
 
 }
 
