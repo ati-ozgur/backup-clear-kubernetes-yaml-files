@@ -21,12 +21,76 @@ It shows using jq and yq commands to get clear yaml file for a kubernetes resour
 
 
 install these two tools.
+
+### windows install of jq and yq
+
 I am using scoop
 
 
 	scoop install jq
 	scoop install yq
 
+### ubuntu install of jq and yq
+
+
+
+	sudo apt install jq -y
+	sudo snap install yq
 
 ## usage
+
+1. download zip or clone repository
+2. open powershell
+3. goto directory of project
+
+4. run following commands in powershell
+
+
+	.  .\backup_clear_kubernetes_yaml_files.ps1 
+	# save everything in all namespace
+	save_all
+
+	.  .\backup_clear_kubernetes_yaml_files.ps1 
+	# save everything in given namespace below development
+	save_all_in_namespace development
+
+
+5. every resource you have access are saved to backup directory separated by namespace and resource name.
+Below is an output directory structure of an example run
+
+
+	└───development
+	    ├───configmaps
+	    ├───deployments
+	    ├───endpoints
+	    ├───ingress
+	    ├───pods
+	    ├───replicasets
+	    ├───secrets
+	    └───services
+
+### current resources saved
+
+current script saves below resources
+
+- workloads
+	- "pods"
+	- "deployments"
+	- "daemonsets"
+	- "statefulsets"
+	- "replicasets"
+	- "jobs"
+	- "cronjobs"
+- config
+	- "configmaps"
+	- "secrets"
+- network
+	- "services"
+	- "endpoints"
+	- "ingress"
+	- "networkpolicy"
+- storage
+	- "persistentvolumeclaims"
+	- "persistentvolume"
+
 
