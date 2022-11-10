@@ -75,6 +75,26 @@ function save_yaml
 	
 }
 
+function save_type
+{
+	param (
+		[string]$type_name,
+		[string]$namespace
+		)
+
+	$script_block = {
+		$list = run_kubectl_get ${type_name} ${type_name} $namespace
+		for($j=0;$j -lt $list.Length; $j++)
+		{
+			$current_name = $list[$j]
+			Write-Host "saving $type_name : $current_name in $namespace "
+			save_yaml ${type_name}  $current_name $namespace
+		}
+	
+	}
+	Invoke-Command -scriptblock $script_block
+
+}
 
 function save_all
 {
@@ -83,13 +103,8 @@ function save_all
 	{
 		$namespace = $namespaces[$i]
 		Write-Host "Working on $namespace pods"
-		$pods = run_kubectl_get "pods" "pod" $namespace
-		for($j=0;$j -lt $pods.Length; $j++)
-		{
-			$pod_name = $pods[$j]
-			Write-Host "saving pod: $pod_name in $namespace "
-			save_yaml "pods" $pod_name $namespace
-		}
+		save_type "pod" $namespace
+
 
 	}
 }
