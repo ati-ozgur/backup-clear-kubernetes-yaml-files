@@ -15,6 +15,11 @@ function run_kubectl_get
 	}
 	$list = Invoke-Command -scriptblock $scriptblock
 
+	if (!$list) 
+	{ 
+		$list = @()
+	}
+
 	#Write-Host $list
 	
 	#Write-Host $list.GetType().Name
