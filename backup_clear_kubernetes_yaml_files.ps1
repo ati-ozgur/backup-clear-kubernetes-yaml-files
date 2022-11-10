@@ -29,15 +29,6 @@ function run_kubectl_get
 }
 
 
-function get_pods
-{
-	param (
-		[string]$namespace = ""
-		)
-	#Write-Output $namespace
-	run_kubectl_get "pods"  $namespace
-}
-
 
 
 
