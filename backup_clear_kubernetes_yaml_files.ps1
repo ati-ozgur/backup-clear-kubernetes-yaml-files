@@ -66,9 +66,29 @@ function save_yaml
 		[string]$name,
 		[string]$namespace = ""
 		)
-	confirm_folder "backup/$namespace"
+	$output_folder = "backup/$namespace/$type_name"
+	confirm_folder $output_folder
+
 	$scriptblock = {kubectl get $type_name $name  -n $namespace -o=json | jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.selfLink,.metadata.creationTimestamp,.metadata.annotations,.metadata.generation,.metadata.ownerReferences,.status)' | yq eval . --prettyPrint	}
-	Invoke-Command -scriptblock $scriptblock | Out-File "$namespace\pod_$name.yml"
+	Invoke-Command -scriptblock $scriptblock | Out-File "$output_folder\$name.yml"
 	
+}
+
+
+function save_all
+{
+	$namespaces = get_namespaces
+	for($i=0;$i -lt $namespaces.Length; $i++)
+	{
+		$namespace = $namespaces[$i]
+		Write-Host "Working on $namespace pods"
+		$pods = run_kubectl_get "pods" "pod" $namespace
+		for($j=0;$j -lt $pods.Length; $j++)
+		{
+			$pod_name = $pods[$j]
+			save_yaml "pods" $pod_name $namespace
+		}
+
+	}
 }
 
