@@ -14,16 +14,35 @@ function run_kubectl_get
 		$scriptblock = {kubectl get $type_name -o name}
 	}
 	$list = Invoke-Command -scriptblock $scriptblock
-	$list = $list | sort
 
-	for($i=0;$i -lt $list.Length; $i++)
+	#Write-Host $list
+	
+	#Write-Host $list.GetType().Name
+	#return
+
+	# if only one element it is string
+	if ($list.GetType().Name -eq "String")
 	{
-		$current = $list[$i] 
+		$current = $list
 		$start_index = $current.IndexOf("/") + 1
 		$current = $current.SubString($start_index)
-
-		$list[$i] = $current
+		$list = @($current)
 	}
+	else
+	{
+		$list = $list | sort
+
+		for($i=0;$i -lt $list.Length; $i++)
+		{
+			$current = $list[$i] 
+			$start_index = $current.IndexOf("/") + 1
+			$current = $current.SubString($start_index)
+	
+			$list[$i] = $current
+		}
+	
+	}
+
 
 	Write-Output -NoEnumerate $list
 }
