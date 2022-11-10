@@ -50,11 +50,15 @@ a. save everything in all namespaces
 	.  .\backup_clear_kubernetes_yaml_files.ps1 
 	save_all
 
-b. save everything in given namespace below development
+b. save everything in given namespace, below development
 
 	.  .\backup_clear_kubernetes_yaml_files.ps1 
 	save_all_in_namespace development
 
+c. save one resource in given namespace, below save deployments in development namespace
+
+	.  .\backup_clear_kubernetes_yaml_files.ps1 
+	save_resource deployments development
 
 5. every resource you have access are saved to backup directory separated by namespace and resource name.
 Below is an output directory structure of an example run
