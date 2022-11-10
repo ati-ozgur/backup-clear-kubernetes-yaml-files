@@ -59,16 +59,18 @@ b. save everything in given namespace below development
 5. every resource you have access are saved to backup directory separated by namespace and resource name.
 Below is an output directory structure of an example run
 
+```
+└───development
+    ├───configmaps
+    ├───deployments
+    ├───endpoints
+    ├───ingress
+    ├───pods
+    ├───replicasets
+    ├───secrets
+    └───services
+```
 
-	└───development
-	    ├───configmaps
-	    ├───deployments
-	    ├───endpoints
-	    ├───ingress
-	    ├───pods
-	    ├───replicasets
-	    ├───secrets
-	    └───services
 
 ### current resources saved
 
