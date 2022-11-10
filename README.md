@@ -100,3 +100,10 @@ It should be easy to add more resources to this list provided resource is suppor
 	- "persistentvolume"
 
 
+
+
+### Pull requests
+
+Pull requests are welcome.
+Current scripts is enough for me right now but bug fixes/more features are always good.
+
