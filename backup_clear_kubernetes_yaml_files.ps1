@@ -91,7 +91,7 @@ function save_yaml
 	
 }
 
-function save_type
+function save_resource
 {
 	param (
 		[string]$type_name,
@@ -119,27 +119,27 @@ function save_all_in_namespace
 		[string]$namespace = "development"
 		)
 		# workloads
-		save_type "pods" $namespace
-		save_type "deployments" $namespace
-		save_type "daemonsets" $namespace
-		save_type "statefulsets" $namespace
-		save_type "replicasets" $namespace
-		save_type "jobs" $namespace
-		save_type "cronjobs" $namespace
+		save_resource "pods" $namespace
+		save_resource "deployments" $namespace
+		save_resource "daemonsets" $namespace
+		save_resource "statefulsets" $namespace
+		save_resource "replicasets" $namespace
+		save_resource "jobs" $namespace
+		save_resource "cronjobs" $namespace
 
 		# config
-		save_type "configmaps" $namespace
-		save_type "secrets" $namespace
+		save_resource "configmaps" $namespace
+		save_resource "secrets" $namespace
 
 		# network
-		save_type "services" $namespace
-		save_type "endpoints" $namespace
-		save_type "ingress" $namespace
-		save_type "networkpolicy" $namespace
+		save_resource "services" $namespace
+		save_resource "endpoints" $namespace
+		save_resource "ingress" $namespace
+		save_resource "networkpolicy" $namespace
 
 		# storage
-		save_type "persistentvolumeclaims" $namespace
-		save_type "persistentvolume" $namespace
+		save_resource "persistentvolumeclaims" $namespace
+		save_resource "persistentvolume" $namespace
 
 		
 
