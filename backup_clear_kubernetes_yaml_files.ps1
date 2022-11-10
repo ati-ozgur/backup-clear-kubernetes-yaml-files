@@ -54,7 +54,8 @@ function confirm_folder
 	$exists = Test-Path -Path $foldername
 	if ( $exists -eq $false) {
 	   Write-Host "$foldername doesn't exist, creating"
-	   New-Item -Path $foldername -ItemType directory
+	   # silent create directory
+	   $null = New-Item -Path $foldername -ItemType directory
 	}
 }
 
