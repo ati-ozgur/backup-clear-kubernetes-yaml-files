@@ -3,7 +3,6 @@ function run_kubectl_get
 {
 	param (
 		[string]$type_name,
-		[string]$replacement,
 		[string]$namespace = ""
 		)
 	if ($namespace -ne "") 
@@ -19,7 +18,9 @@ function run_kubectl_get
 
 	for($i=0;$i -lt $list.Length; $i++)
 	{
-		$current = $list[$i]  -replace "$replacement/", ""
+		$current = $list[$i] 
+		$start_index = $current.IndexOf("/") + 1
+		$current = $current.SubString($start_index)
 
 		$list[$i] = $current
 	}
@@ -34,7 +35,7 @@ function get_pods
 		[string]$namespace = ""
 		)
 	#Write-Output $namespace
-	run_kubectl_get "pods" "pod" $namespace
+	run_kubectl_get "pods"  $namespace
 }
 
 
@@ -42,7 +43,7 @@ function get_pods
 
 function get_namespaces
 {
-	run_kubectl_get "namespaces" "namespace"
+	run_kubectl_get "namespaces"
 
 }
 
@@ -81,9 +82,10 @@ function save_type
 		[string]$type_name,
 		[string]$namespace
 		)
+	Write-Host "Working on $namespace $type_name"
 
 	$script_block = {
-		$list = run_kubectl_get ${type_name} ${type_name} $namespace
+		$list = run_kubectl_get ${type_name}  $namespace
 		for($j=0;$j -lt $list.Length; $j++)
 		{
 			$current_name = $list[$j]
@@ -96,16 +98,27 @@ function save_type
 
 }
 
+function save_all_in_namespace
+{
+	param (
+		[string]$namespace = "development"
+		)
+		save_type "pod" $namespace
+		#save_type "deployment" $namespace
+		#save_type "daemonset" $namespace
+		#save_type "service" $namespace
+
+}
+
 function save_all
 {
 	$namespaces = get_namespaces
 	for($i=0;$i -lt $namespaces.Length; $i++)
 	{
 		$namespace = $namespaces[$i]
-		Write-Host "Working on $namespace pods"
-		save_type "pod" $namespace
-
+		save_all_in_namespace $namespace
 
 	}
 }
+
 
