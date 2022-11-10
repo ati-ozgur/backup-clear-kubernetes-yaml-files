@@ -86,6 +86,7 @@ function save_all
 		for($j=0;$j -lt $pods.Length; $j++)
 		{
 			$pod_name = $pods[$j]
+			Write-Host "saving pod: $pod_name in $namespace "
 			save_yaml "pods" $pod_name $namespace
 		}
 
