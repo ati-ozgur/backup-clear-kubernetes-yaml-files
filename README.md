@@ -111,7 +111,6 @@ It should be easy to add more resources to this list provided resource is suppor
 Pull requests are welcome.
 Current scripts is enough for me right now but bug fixes/more features are always good.
 
-We have fairly complex kubernetes cluster in [SMS-Digital](https://www.sms-digital.com/) and this script is able to take yaml backups without any error.
 
 I handled 1 value return from kubectl get command using type checking for string.
 But if powershell experts has a more elegant solution, I would like to learn it.
