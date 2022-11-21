@@ -87,7 +87,7 @@ function save_yaml
 	confirm_folder $output_folder
 
 	$scriptblock = {kubectl get $type_name $name  -n $namespace -o=json | jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.selfLink,.metadata.creationTimestamp,.metadata.annotations,.metadata.generation,.metadata.ownerReferences,.status)' | yq eval . --prettyPrint	}
-	Invoke-Command -scriptblock $scriptblock | Out-File "$output_folder\$name.yml"
+	Invoke-Command -scriptblock $scriptblock | Out-File "$output_folder\$name.yml" -encoding utf8
 	
 }
 
