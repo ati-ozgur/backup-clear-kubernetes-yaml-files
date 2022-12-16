@@ -81,9 +81,10 @@ function save_yaml
 	param (
 		[string]$type_name,
 		[string]$name,
-		[string]$namespace = ""
+		[string]$namespace = "",
+		[string]$folder_to_save = "backup"
 		)
-	$output_folder = "backup/$namespace/$type_name"
+	$output_folder = "$folder_to_save/$namespace/$type_name"
 	confirm_folder $output_folder
 
 	$scriptblock = {kubectl get $type_name $name  -n $namespace -o=json | jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.selfLink,.metadata.creationTimestamp,.metadata.annotations,.metadata.generation,.metadata.ownerReferences,.status)' | yq eval . --prettyPrint	}
@@ -95,7 +96,8 @@ function save_resource
 {
 	param (
 		[string]$type_name,
-		[string]$namespace
+		[string]$namespace,
+		[string]$folder_to_save
 		)
 	Write-Host "Working on $namespace $type_name"
 
@@ -105,7 +107,7 @@ function save_resource
 		{
 			$current_name = $list[$j]
 			Write-Host "saving $type_name : $current_name in $namespace "
-			save_yaml ${type_name}  $current_name $namespace
+			save_yaml ${type_name}  $current_name $namespace $folder_to_save
 		}
 	
 	}
@@ -116,30 +118,31 @@ function save_resource
 function save_all_in_namespace
 {
 	param (
-		[string]$namespace = "development"
+		[string]$namespace = "development",
+		[string]$folder_to_save
 		)
 		# workloads
-		save_resource "pods" $namespace
-		save_resource "deployments" $namespace
-		save_resource "daemonsets" $namespace
-		save_resource "statefulsets" $namespace
-		save_resource "replicasets" $namespace
-		save_resource "jobs" $namespace
-		save_resource "cronjobs" $namespace
+		save_resource "pods" $namespace $folder_to_save
+		save_resource "deployments" $namespace $folder_to_save
+		save_resource "daemonsets" $namespace $folder_to_save
+		save_resource "statefulsets" $namespace $folder_to_save
+		save_resource "replicasets" $namespace $folder_to_save
+		save_resource "jobs" $namespace $folder_to_save
+		save_resource "cronjobs" $namespace $folder_to_save
 
 		# config
-		save_resource "configmaps" $namespace
-		save_resource "secrets" $namespace
+		save_resource "configmaps" $namespace $folder_to_save
+		save_resource "secrets" $namespace $folder_to_save
 
 		# network
-		save_resource "services" $namespace
-		save_resource "endpoints" $namespace
-		save_resource "ingress" $namespace
-		save_resource "networkpolicy" $namespace
+		save_resource "services" $namespace $folder_to_save
+		save_resource "endpoints" $namespace $folder_to_save
+		save_resource "ingress" $namespace $folder_to_save
+		save_resource "networkpolicy" $namespace $folder_to_save
 
 		# storage
-		save_resource "persistentvolumeclaims" $namespace
-		save_resource "persistentvolume" $namespace
+		save_resource "persistentvolumeclaims" $namespace $folder_to_save
+		save_resource "persistentvolume" $namespace $folder_to_save
 
 		
 
@@ -147,6 +150,9 @@ function save_all_in_namespace
 
 function save_all
 {
+	param (
+		[string]$folder_to_save
+		)
 	$namespaces = get_namespaces
 	for($i=0;$i -lt $namespaces.Length; $i++)
 	{
