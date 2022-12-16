@@ -88,7 +88,7 @@ function save_yaml
 	confirm_folder $output_folder
 
 	$scriptblock = {kubectl get $type_name $name  -n $namespace -o=json | jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.selfLink,.metadata.creationTimestamp,.metadata.annotations,.metadata.generation,.metadata.ownerReferences,.status)' | yq eval . --prettyPrint	}
-	Invoke-Command -scriptblock $scriptblock | Out-File "$output_folder\$name.yml"
+	Invoke-Command -scriptblock $scriptblock | Out-File "$output_folder\$name.yml" -encoding utf8
 	
 }
 
@@ -96,8 +96,7 @@ function save_resource
 {
 	param (
 		[string]$type_name,
-		[string]$namespace,
-		[string]$folder_to_save
+		[string]$namespace
 		)
 	Write-Host "Working on $namespace $type_name"
 
@@ -107,7 +106,7 @@ function save_resource
 		{
 			$current_name = $list[$j]
 			Write-Host "saving $type_name : $current_name in $namespace "
-			save_yaml ${type_name}  $current_name $namespace $folder_to_save
+			save_yaml ${type_name}  $current_name $namespace
 		}
 	
 	}
@@ -118,8 +117,7 @@ function save_resource
 function save_all_in_namespace
 {
 	param (
-		[string]$namespace = "development",
-		[string]$folder_to_save
+		[string]$namespace = "development"
 		)
 		# workloads
 		save_resource "pods" $namespace $folder_to_save
@@ -150,14 +148,11 @@ function save_all_in_namespace
 
 function save_all
 {
-	param (
-		[string]$folder_to_save
-		)
 	$namespaces = get_namespaces
 	for($i=0;$i -lt $namespaces.Length; $i++)
 	{
 		$namespace = $namespaces[$i]
-		save_all_in_namespace $namespace
+		save_all_in_namespace $namespace $folder_to_save
 
 	}
 }

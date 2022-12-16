@@ -45,20 +45,38 @@ I am using scoop
 
 4. run following commands in powershell
 
-a. save everything in all namespaces
+a. save everything in all namespaces in default backup folder
 
 	.  .\backup_clear_kubernetes_yaml_files.ps1 
 	save_all
 
-b. save everything in given namespace, below development
+b. save everything in all namespaces in a given folder
+
+	.  .\backup_clear_kubernetes_yaml_files.ps1 
+	save_all folder_to_save
+
+
+c. save everything in given namespace, below development
 
 	.  .\backup_clear_kubernetes_yaml_files.ps1 
 	save_all_in_namespace development
 
-c. save one resource in given namespace, below save deployments in development namespace
+
+d. save everything in given namespace and folder, below development and folder_to_save
+
+	.  .\backup_clear_kubernetes_yaml_files.ps1 
+	save_all_in_namespace development folder_to_save
+
+e. save one resource in given namespace, below save deployments in development namespace
 
 	.  .\backup_clear_kubernetes_yaml_files.ps1 
 	save_resource deployments development
+
+f. save one resource in given namespace, below save deployments in development namespace in folder_to_save
+
+	.  .\backup_clear_kubernetes_yaml_files.ps1 
+	save_resource deployments development folder_to_save
+
 
 5. every resource you have access are saved to backup directory separated by namespace and resource name.
 Below is an output directory structure of an example run
