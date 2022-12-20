@@ -82,7 +82,7 @@ function save_yaml
 		[string]$type_name,
 		[string]$name,
 		[string]$namespace = "",
-		[string]$folder_to_save = "backup"
+		[string]$folder_to_save
 		)
 	$output_folder = "$folder_to_save/$namespace/$type_name"
 	confirm_folder $output_folder
@@ -96,7 +96,8 @@ function save_resource
 {
 	param (
 		[string]$type_name,
-		[string]$namespace
+		[string]$namespace,
+		[string]$folder_to_save
 		)
 	Write-Host "Working on $namespace $type_name"
 
@@ -106,7 +107,7 @@ function save_resource
 		{
 			$current_name = $list[$j]
 			Write-Host "saving $type_name : $current_name in $namespace "
-			save_yaml ${type_name}  $current_name $namespace
+			save_yaml ${type_name}  $current_name $namespace $folder_to_save
 		}
 	
 	}
@@ -117,7 +118,8 @@ function save_resource
 function save_all_in_namespace
 {
 	param (
-		[string]$namespace = "development"
+		[string]$namespace = "development",
+		[string] $folder_to_save		
 		)
 		# workloads
 		save_resource "pods" $namespace $folder_to_save
@@ -148,6 +150,9 @@ function save_all_in_namespace
 
 function save_all
 {
+	param (
+		[string] $folder_to_save = "backup"
+		)
 	$namespaces = get_namespaces
 	for($i=0;$i -lt $namespaces.Length; $i++)
 	{
